@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: Content Uploaded to AWS S3
+    description: Applicatiom to allow user(s) to upload content to AWS S3 bucket.
+management:
+  endpoints:
+    web:
+      base-path: /
+      
+aws:
+  endpointUrl: https://s3-eu-west-1.amazonaws.com
+  accessKey: 
+  secretKey: 
+  bucketName:       

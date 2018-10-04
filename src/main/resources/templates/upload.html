@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head th:replace="fragments/head ::head">
+</head>
+<body class="text-center">
+	<div th:replace="fragments/header"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-2"></div>
+			<div class="col-lg-8">
+				<form th:action="@{/upload}" method="post"
+					enctype="multipart/form-data">
+					<h1 class="h3 mb-3 font-weight-normal">Upload Files To AWS S3</h1>
+
+					<div class="row">
+						<label class="col-sm-3 col-form-label">Folder</label>
+						<div class="col-sm-9">
+							<div class="form">
+								<div class="input-group col-xs-3">
+									<select class="form-control" name="folderName">
+										<option th:each="folder : ${folders}"
+											th:value="${folder.name}" th:text="${folder.name}"></option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<hr />
+					<div class="form-group row">
+						<label for="inputUserStatus" class="col-sm-3 col-form-label">Files</label>
+						<div class="controls col-sm-9">
+							<div class="form">
+								<div class="entry input-group col-xs-3">
+									<input class="form-control" name="fileNames" type="text"
+										placeholder="File Name" /> <input class="form-control"
+										name="files" type="file" placeholder="Value" /> <span
+										class="input-group-btn">
+										<button class="btn btn-success btn-add" type="button">
+											<span class="">+</span>
+										</button>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<h1>Result</h1>
+						<div th:each="file : ${files}">
+							<a th:href="${file.name}" th:text="${file.name}" target="_blank" />
+						</div>
+					</div>
+					<hr />
+					<div class="row">
+						<div class="col-lg-4"></div>
+						<div class="col-lg-3">
+							<button class="btn btn-sm btn-primary btn-block" type="submit">Upload</button>
+						</div>
+						<div class="col-lg-3">
+							<a class="btn btn-sm btn-primary btn-block" href="/">Clear</a>
+						</div>
+						<div class="col-lg-2"></div>
+					</div>
+
+				</form>
+			</div>
+			<div class="col-lg"></div>
+		</div>
+	</div>
+	<div th:replace="fragments/footer :: footer"></div>
+	<script type="text/javascript">
+		$(function() {
+			$(document)
+					.on(
+							'click',
+							'.btn-add',
+							function(e) {
+								e.preventDefault();
+
+								var controlForm = $('.controls .form:first'), currentEntry = $(
+										this).parents('.entry:first'), newEntry = $(
+										currentEntry.clone()).appendTo(
+										controlForm);
+
+								newEntry.find('input').val('');
+								controlForm.find('.entry:not(:last) .btn-add')
+										.removeClass('btn-add').addClass(
+												'btn-remove').removeClass(
+												'btn-success').addClass(
+												'btn-danger').html(
+												'<span> - </span>');
+							}).on('click', '.btn-remove', function(e) {
+						$(this).parents('.entry:first').remove();
+
+						e.preventDefault();
+						return false;
+					});
+		});
+	</script>
+</body>
+</html>
